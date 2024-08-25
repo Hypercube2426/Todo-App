@@ -1,6 +1,6 @@
 const express = require('express');
 const app = express();
-const {createTodo} = require("./types")
+const {createTodo, updateTodo} = require("./types")
 
 app.use(express.json());
 
@@ -19,8 +19,15 @@ app.get('/todo', function (req, res) {
     
 })
 
-app.put('/todo', function (req, res) {
-    
+app.put('/todo', function (req, res) { 
+    const updatepayload = req.body;
+    const parsedPayload = updateTodo.safeParse(updatepayload);
+    if(!parsedPayload.success){
+        res.status(411).json({
+            msg:"you sent the wrong inputs",
+        })
+        return;
+    }
 })
 
 

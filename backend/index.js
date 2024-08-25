@@ -4,7 +4,7 @@ const {createTodo, updateTodo} = require("./types")
 
 app.use(express.json());
 
-app.post('/todo', function (req, res) {
+app.post('/todo',async function (req, res) {
     const createpayload = req.body;
     const parsedPayload = createTodo.safeParse(createpayload);
     if(!parsedPayload.success){
@@ -13,16 +13,29 @@ app.post('/todo', function (req, res) {
         })
         return;
     }
+    //put it in mongodb
+    await todo.create({
+        title:createpayload.title,
+        description:createpayload.description,
+        completed:false
+
+    })
+    res.json({msg:"Todo created"})
+
 })
-//put it in mongodb
+
 //creating mongodb schema
 //putting, updating , getting something in mongo db
 
-app.get('/todo', function (req, res) {
+app.get('/todos',async function (req, res) {
+    const todos = await todo.find({});
+    res.json({
+        todos
+    })
     
 })
 
-app.put('/todo', function (req, res) { 
+app.put('/todo',async function (req, res) { 
     const updatepayload = req.body;
     const parsedPayload = updateTodo.safeParse(updatepayload);
     if(!parsedPayload.success){
@@ -31,6 +44,15 @@ app.put('/todo', function (req, res) {
         })
         return;
     }
+    await todo.update({
+        _id:req.body.id
+    },{
+        completed:true
+        })
+    
+    res.json({
+        msg:"todo marked as completed"
+    })
 })
 
 

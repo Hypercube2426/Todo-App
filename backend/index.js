@@ -1,11 +1,20 @@
 const express = require('express');
 const app = express();
+const {createTodo} = require("./types")
 
 app.use(express.json());
 
 app.post('/todo', function (req, res) {
-    
+    const createpayload = req.body;
+    const parsedPayload = createTodo.safeParse(createpayload);
+    if(!parsedPayload.success){
+        res.status(411).json({
+            msg:"you sent the wrong inputs",
+        })
+        return;
+    }
 })
+//put it in mongodb
 app.get('/todo', function (req, res) {
     
 })

@@ -15,6 +15,9 @@ app.post('/todo', function (req, res) {
     }
 })
 //put it in mongodb
+//creating mongodb schema
+//putting, updating , getting something in mongo db
+
 app.get('/todo', function (req, res) {
     
 })
